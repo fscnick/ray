@@ -252,7 +252,7 @@ The [ray-cluster.autoscaler.yaml](https://github.com/ray-project/kuberay/blob/v1
 
 * **`enableInTreeAutoscaling`**: By setting `enableInTreeAutoscaling: true`, the KubeRay operator automatically configures an autoscaling sidecar container for the Ray head Pod.
 * **`minReplicas` / `maxReplicas` / `replicas`**: Set the `minReplicas` and `maxReplicas` fields to define the range for `replicas` in an autoscaling `workerGroup`. Typically, you would initialize both `replicas` and `minReplicas` with the same value during the deployment of an autoscaling cluster. Subsequently, the Ray Autoscaler adjusts the `replicas` field as it adds or removes Pods from the cluster.
-* **`restartPolicy`**: Autoscaler V1 and V2 both require `restartPolicy: Never` on all worker groups.
+* **`restartPolicy`**: Autoscaler V1 and V2 both require `restartPolicy: Never` on all worker pods. However, KubeRay automatically sets `restartPolicy: Never` on worker pods if autoscaling V2 is enabled or the worker group's `restartPolicy` is unset with autoscaler V1. If you explicitly set `restartPolicy` to a value other than `Never` on a worker group while using autoscaler V1, KubeRay emits a warning log and a Kubernetes event.
 
   ```yaml
   workerGroupSpecs:
